@@ -65,19 +65,14 @@ export const show = async (req: Request, res: Response) => {
 };
 
 export const store = async (req: Request, res: Response) => {
-  const { category_name, description } = req.body;
+  const {category_name, description} = req.body;
+  const requiredFields = ["category_name", "description"];
+  const missingFields = requiredFields.filter((field) => !req.body[field]);
 
-  if (!category_name) {
+  if (missingFields.length > 0) {
     return res.status(400).json({
       status: "Error",
-      message: "Category name is required",
-    });
-  }
-
-  if (!description) {
-    return res.status(400).json({
-      status: "Error",
-      message: "Description is required",
+      message: `Missing required fields: ${missingFields.join(", ")}`,
     });
   }
 
@@ -108,6 +103,8 @@ export const store = async (req: Request, res: Response) => {
 export const update = async (req: Request, res: Response) => {
   const { id: category_id } = req.params;
   const { category_name, description } = req.body;
+  const requiredFields = ["category_name", "description"];
+  const missingFields = requiredFields.filter((field) => !req.body[field])
 
   if (!category_id) {
     return res.status(403).json({
