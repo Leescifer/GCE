@@ -3,26 +3,33 @@ CREATE DATABASE gce;
 
 --- Clerk ---
 CREATE TABLE clerk (
-    clerk_id SERIAL PRIMARY KEY,
-    clerk_name VARCHAR(100) NOT NULL,
-    age INT CHECK (age > 15),
-    gender VARCHAR(10) CHECK (gender IN ('Male', 'Female', 'Other')),
-    role VARCHAR(50) NOT NULL, -- e.g., cashier, stock manager, delivery staff
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    clerk_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    clerk_name VARCHAR(30) NOT NULL,
+    age INT NOT NULL,
+    gender VARCHAR(10),
+    role VARCHAR(40),
+    active_status BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
+
 
 -- 1. Categories
 CREATE TABLE category (
-    category_id SERIAL PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL,
-    description TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    category_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    category_name VARCHAR(30) NOT NULL,
+    description TEXT NOT NULL,
+    active_status BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
--- 2. Products
+-- 2. Products> 
 CREATE TABLE product (
-    product_id SERIAL PRIMARY KEY,
-    product_name VARCHAR(100) NOT NULL,
+    product_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    product_name VARCHAR(50) NOT NULL,
     net_weight VARCHAR(55),
     expiry_date DATE,
     price NUMERIC(10,2), 
@@ -46,7 +53,7 @@ CREATE TABLE inventory (
     inventory_id SERIAL PRIMARY KEY,
     product_id INT NOT NULL REFERENCES product(product_id),
     supplier_id INT REFERENCES supplier(supplier_id),
-    clerk_id INT REFERENCES clerk(clerk_id), -- clerk who handled it
+    clerk_id INT REFERENCES clerk(clerk_id), 
     quantity INT NOT NULL DEFAULT 0,
     unit_cost NUMERIC(10,2),
     delivery_date DATE,
@@ -67,7 +74,7 @@ CREATE TABLE customer (
 CREATE TABLE orders (
     order_id SERIAL PRIMARY KEY,
     customer_id INT REFERENCES customer(customer_id),
-    clerk_id INT REFERENCES clerk(clerk_id), -- clerk who handled sale
+    clerk_id INT REFERENCES clerk(clerk_id),
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     total_amount NUMERIC(12,2) DEFAULT 0
 );
@@ -78,7 +85,7 @@ CREATE TABLE order_items (
     order_id INT REFERENCES orders(order_id),
     product_id INT REFERENCES product(product_id),
     quantity INT NOT NULL,
-    price NUMERIC(10,2), -- selling price per unit
+    price NUMERIC(10,2), 
     subtotal NUMERIC(12,2)
 );
 
@@ -86,7 +93,7 @@ CREATE TABLE order_items (
 CREATE TABLE expenses (
     expense_id SERIAL PRIMARY KEY,
     supplier_id INT REFERENCES supplier(supplier_id),
-    expense_type VARCHAR(100), -- e.g., "Transport", "Raw Material"
+    expense_type VARCHAR(100), 
     amount NUMERIC(12,2),
     expense_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     notes TEXT

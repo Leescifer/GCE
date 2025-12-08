@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "concurently \"npm run server\" \"npm run client\"",
+    "server": "nodemon dist/index.js --ignore client",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "client": "npm start"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +28,7 @@
     "typescript": "^5.9.2"
   },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.28.5",
     "@types/pg": "^8.15.5"
   }
 }
