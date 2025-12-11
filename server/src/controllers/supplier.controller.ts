@@ -6,7 +6,7 @@ export const index = async (req: Request, res: Response) => {
     const result = await pool.query(
       `
             SELECT * FROM supplier
-            `
+      `
     );
 
     res.status(200).json({

@@ -14,7 +14,6 @@ CREATE TABLE clerk (
     deleted_at TIMESTAMP NULL
 );
 
-
 -- 1. Categories
 CREATE TABLE category (
     category_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -36,21 +35,26 @@ CREATE TABLE product (
     description TEXT,
     status BOOLEAN DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL,
     category_id INT REFERENCES category(category_id)
 );
 
 -- 3. Suppliers (for inventory purchases/expenses)
 CREATE TABLE supplier (
-    supplier_id SERIAL PRIMARY KEY,
+    supplier_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     supplier_name VARCHAR(100) NOT NULL,
     contact_info VARCHAR(150),
     address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    active_status BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
 -- 4. Inventory (linked to supplier)
 CREATE TABLE inventory (
-    inventory_id SERIAL PRIMARY KEY,
+    inventory_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     product_id INT NOT NULL REFERENCES product(product_id),
     supplier_id INT REFERENCES supplier(supplier_id),
     clerk_id INT REFERENCES clerk(clerk_id), 
@@ -58,44 +62,58 @@ CREATE TABLE inventory (
     unit_cost NUMERIC(10,2),
     delivery_date DATE,
     item_source VARCHAR(100),
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
 -- 5. Customers / Delivery recipients
 CREATE TABLE customer (
-    customer_id SERIAL PRIMARY KEY,
+    customer_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     customer_name VARCHAR(100) NOT NULL,
     contact_info VARCHAR(150),
     address TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    active_status BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
 -- 6. Orders (sales = income)
 CREATE TABLE orders (
-    order_id SERIAL PRIMARY KEY,
+    order_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     customer_id INT REFERENCES customer(customer_id),
     clerk_id INT REFERENCES clerk(clerk_id),
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    total_amount NUMERIC(12,2) DEFAULT 0
+    total_amount NUMERIC(12,2) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    delete_at TIMESTAMP NULL
 );
 
 -- 7. Order Items (what was sold, at what price)
 CREATE TABLE order_items (
-    order_item_id SERIAL PRIMARY KEY,
+    order_item_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     order_id INT REFERENCES orders(order_id),
     product_id INT REFERENCES product(product_id),
     quantity INT NOT NULL,
     price NUMERIC(10,2), 
-    subtotal NUMERIC(12,2)
+    subtotal NUMERIC(12,2),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
 -- 8. Expenses (e.g., supplier payments, logistics)
 CREATE TABLE expenses (
-    expense_id SERIAL PRIMARY KEY,
+    expense_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     supplier_id INT REFERENCES supplier(supplier_id),
     expense_type VARCHAR(100), 
     amount NUMERIC(12,2),
     expense_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    notes TEXT
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP NULL
 );
 
