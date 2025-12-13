@@ -1,14 +1,16 @@
-import Signin from "./pages/Signin"
+import { useRoutes } from "react-router-dom";
+import Modal from 'react-modal';
+import {routes} from "./routes"
+
+Modal.setAppElement('#root');
+
 
 function App() {
 
-  return (
-    <>
-    <Signin/>
+  const routing = useRoutes(routes);
+  return routing
 
        
-    </>
-  )
 }
 
 export default App

@@ -14,12 +14,15 @@
     "lucide-react": "^0.560.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-modal": "^3.16.3",
+    "react-router-dom": "^7.10.1",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
+    "@types/react-modal": "^3.16.3",
     "@vitejs/plugin-react-swc": "^4.0.1",
     "eslint": "^9.35.0",
     "eslint-plugin-react-hooks": "^5.2.0",
