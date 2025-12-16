@@ -8,6 +8,7 @@ CREATE TABLE clerk (
     age INT NOT NULL,
     gender VARCHAR(10),
     role VARCHAR(40),
+    password TEXT NOT NULL,
     active_status BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
