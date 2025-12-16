@@ -22,7 +22,7 @@ export const signup = async (req: Request, res: Response) => {
     const query = `
     INSERT INTO clerk (clerk_name, age, gender, role, password)
     VALUES ($1, $2, $3, $4, $5)
-    RETURNING cler_id, clerk_name, role, created_at;
+    RETURNING clerk_id, clerk_name, role, created_at;
     `;
 
     const values = [clerk_name, age, gender, role, hashedPassword];
