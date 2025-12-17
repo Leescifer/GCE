@@ -7,9 +7,9 @@ import { AuthRequest } from "../middleware/auth.middleware";
 // Signup
 export const signup = async (req: Request, res: Response) => {
   try {
-    const { clerk_name, age, gender, role, password } = req.body;
+    const { user_name, full_name, age, gender, role, password } = req.body;
 
-    if (!clerk_name || !age || !gender || !role || !password) {
+    if (!user_name || !full_name || !age || !gender || !role || !password) {
       return res.status(400).json({
         status: "Error",
         message: "All fields are required",
@@ -20,12 +20,12 @@ export const signup = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const query = `
-    INSERT INTO clerk (clerk_name, age, gender, role, password)
-    VALUES ($1, $2, $3, $4, $5)
-    RETURNING clerk_id, clerk_name, role, created_at;
+    INSERT INTO clerk (user_name, full_name, age, gender, role, password)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING clerk_id, user_name, full_name, role, created_at;
     `;
 
-    const values = [clerk_name, age, gender, role, hashedPassword];
+    const values = [user_name, full_name, age, gender, role, hashedPassword];
 
     const result = await pool.query(query, values);
 
@@ -46,24 +46,24 @@ export const signup = async (req: Request, res: Response) => {
 // Login
 export const login = async (req: Request, res: Response) => {
   try {
-    const { clerk_name, password } = req.body;
+    const { user_name, password } = req.body;
 
-    if (!clerk_name || !password) {
+    if (!user_name || !password) {
       return res.status(400).json({
         error: "Error",
-        message: "clerk_name and password are required",
+        message: "user_name and password are required",
       });
     }
 
     const query = `
-        SELECT clerk_id, clerk_name, password 
+        SELECT clerk_id, user_name, password 
         FROM clerk
-        WHERE clerk_name = $1
+        WHERE user_name = $1
         AND active_status = true
         AND deleted_at IS NULL;
         `;
 
-    const result = await pool.query(query, [clerk_name]);
+    const result = await pool.query(query, [user_name]);
 
     if (result.rowCount === 0) {
       return res.status(401).json({
@@ -93,7 +93,8 @@ export const login = async (req: Request, res: Response) => {
       message: "Login successfull",
       data: {
         clerk_id: clerk.clerk_id,
-        clerk_name: clerk.clerk_name,
+        user_name: clerk.user_name,
+        full_name: clerk.full_name,
         role: clerk.role,
         token,
       },
