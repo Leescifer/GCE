@@ -13,6 +13,5 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Server is running fine");
 })
 
-
 export default app;
 

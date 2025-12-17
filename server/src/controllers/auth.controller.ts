@@ -82,11 +82,11 @@ export const login = async (req: Request, res: Response) => {
         message: "Invalid Credentials",
       });
     }
-    
+
     const token = generateToken({
-        clerk_id: clerk.clerk_id,
-        role: clerk.role,
-    })
+      clerk_id: clerk.clerk_id,
+      role: clerk.role,
+    });
 
     return res.status(200).json({
       status: "Success",
@@ -95,10 +95,9 @@ export const login = async (req: Request, res: Response) => {
         clerk_id: clerk.clerk_id,
         clerk_name: clerk.clerk_name,
         role: clerk.role,
-        token
+        token,
       },
     });
-
   } catch (error) {
     console.error("Login error", error);
     return res.status(500).json({
@@ -109,12 +108,12 @@ export const login = async (req: Request, res: Response) => {
 };
 
 // Change Logout
-export const logout = async (_req:Request, res:Response) => {
-    return res.status(200).json({
-        status: "Success",
-        message: "Logged out successfully"
-    });
-}
+export const logout = async (_req: Request, res: Response) => {
+  return res.status(200).json({
+    status: "Success",
+    message: "Logged out successfully",
+  });
+};
 
 // Change Password
 export const changePassword = async (req: AuthRequest, res: Response) => {
@@ -156,7 +155,6 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
       status: "Success",
       message: "Password changed successfully",
     });
-
   } catch (error) {
     console.error("Change password error", error);
     return res.status(500).json({
@@ -165,5 +163,3 @@ export const changePassword = async (req: AuthRequest, res: Response) => {
     });
   }
 };
-
-
