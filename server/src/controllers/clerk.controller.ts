@@ -99,7 +99,7 @@ export const update = async (req: Request, res: Response) => {
         gender = COALESCE($3, gender),
         role = COALESCE($4, role),
         updated_at = NOW()
-      WHERE clerk_id = $5
+      WHERE clerk_id = $5w
       RETURNING
         clerk_id,
         user_name,
