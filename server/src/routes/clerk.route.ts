@@ -5,13 +5,13 @@ import {
     update,
     destroy
 } from '../controllers/clerk.controller'; 
-import { authMiddleware } from "../middleware/auth.middleware";
+import { Protected } from "../middleware/protected.middleware";
 
 const router = Router();
 
-router.get("/", index, authMiddleware);
-router.get("/:id", show, authMiddleware);
-router.put("/:id", update, authMiddleware);
-router.delete("/:id", destroy, authMiddleware);
+router.get("/", index, Protected);
+router.get("/:id", show, Protected);
+router.put("/:id", update, Protected);
+router.delete("/:id", destroy, Protected);
 
 export default router;
