@@ -9,7 +9,7 @@ const getAuthUser = (): AuthUser | null => {
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:3000/api",
   headers: { "Content-Type": "application/json" },
-  withCredentials: true, // for cookie-based auth
+  withCredentials: true,
 });
 
 // Attach JWT automatically
@@ -28,7 +28,6 @@ axiosInstance.interceptors.response.use(
     if (error.response?.status === 401) {
       console.warn("Unauthorized! Logging out...");
       localStorage.removeItem("authUser");
-      window.location.href = "/login";
     }
     return Promise.reject(error);
   }
