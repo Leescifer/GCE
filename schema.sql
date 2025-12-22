@@ -5,7 +5,8 @@ CREATE DATABASE gce;
 CREATE TABLE
     clerk (
         clerk_id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-        clerk_name VARCHAR(30) NOT NULL,
+        user_name VARCHAR(30) NOT NULL,
+        full_name VARCHAR(40) NOT NULL,
         age INT NOT NULL,
         gender VARCHAR(10),
         role VARCHAR(40),

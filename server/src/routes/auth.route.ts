@@ -5,7 +5,7 @@ import {
   logout,
   changePassword,
 } from "../controllers/auth.controller";
-import { authMiddleware } from "../middleware/auth.middleware";
+import { Protected } from "../middleware/protected.middleware";
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.post("/signup", signup);
 router.post("/login", login);
 
 //Private Routes
-router.post("/logout", authMiddleware, logout);
-router.post("/change-password", authMiddleware, changePassword);
+router.post("/logout", Protected, logout);
+router.post("/change-password", Protected, changePassword);
 
 export default router;
