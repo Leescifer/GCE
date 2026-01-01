@@ -85,7 +85,6 @@ const Authenticated: React.FC = () => {
 
         {/* Content */}
         <main className="flex-1 bg-slate-100 p-6 overflow-y-auto">
-          {/* Routed pages */}
         </main>
       </div>
     </div>
